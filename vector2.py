@@ -29,7 +29,7 @@ for i in range(N):
     x, y=map(int, input().split())
     a=vector(x, y)
     l=a.length()
-    if l>lmax:
+    if l > lmax:
         lmax=l
         xmax=a.x
         ymax=a.y
