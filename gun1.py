@@ -126,7 +126,9 @@ class target():
     # FIXME: don't work!!! How to call this functions when object is created? #ИСПРАВЛЕНО
         self.id = canv.create_oval(0,0,0,0)
         self.id_points = canv.create_text(30,30,text = self.points,font = '28')
+        self.vy=8
         self.new_target()
+
 
     def new_target(self):
         """ Инициализация новой цели. """
@@ -137,11 +139,21 @@ class target():
         canv.coords(self.id, x-r,y-r,x+r,y+r)
         canv.itemconfig(self.id, fill = color)
 
+    def set_coords(self):
+        canv.coords(self.id, self.x-self.r, self.y-self.r, self.x+self.r, self.y+self.r)
+
+    def targetmove(self):
+        self.y+=self.vy
+        if self.y>=600-self.r or self.y<=0+self.r:
+            self.vy=-self.vy
+        self.set_coords()
+
     def hit(self, points = 1):
         """ Попадание шарика в цель. """
         canv.coords(self.id,-10,-10,-10,-10)
         self.points += points
         canv.itemconfig(self.id_points, text = self.points)
+
 
 
 t1 = target()
@@ -165,28 +177,35 @@ def new_game(event=''):
 
     z = 0.03
     t1.live = 1
-    t2.live = 2
+    t2.live = 1
+    t1.vy=10
+    t2.vy=10
     while t1.live or t2.live or balls:
+        t1.targetmove()
+        t2.targetmove()
         for b in balls:
             b.move()
             if b.hittest(t1) and t1.live :
                 t1.live = 0
                 t1.hit()
+                t1.vy=0
                 canv.itemconfig(screen1, text = 'Вы уничтожили цель 1 за  ' + str(bullet) + ' выстрелов')
             if b.hittest(t2) and t2.live :
                 t2.live = 0
                 t2.hit()
+                t2.vy=0
                 canv.itemconfig(screen1, text = 'Вы уничтожили цель 2 за ' + str(bullet) + ' выстрелов')
             if t1.live==0 and t2.live==0:
                 canv.bind('<Button-1>', '')
                 canv.bind('<ButtonRelease-1>', '')
+                new_game()
         canv.update()
         time.sleep(0.03)
         g1.targetting()
         g1.power_up()
     canv.itemconfig(screen1, text = '')
     canv.delete(gun)
-    root.after(750,new_game)
+    root.after(1,new_game)
 
 new_game()
 
