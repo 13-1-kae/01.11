@@ -26,6 +26,7 @@ class vector():
 
     def vpro(self, other, other1):
         v= abs((self.x-other.x)*(self.y-other1.y) - (self.y-other.y)*(self.x-other1.x)) / 2
+        return v
 
 maxs=-1000000
 N=int(input())
@@ -37,7 +38,6 @@ for i in a:
     for j in a:
         for k in a:
             s=i.vpro(j, k)
-
             if s > maxs:
                 maxs=s
 print(maxs)
