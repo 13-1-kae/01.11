@@ -23,8 +23,14 @@ class vector():
 
     def __str__(self):
         return self.x, self.y
-
-x, y=list(map(int, input().split(',')))
-a=vector(x, y)
-print(a.__str__())
-
+lmax=0
+N=int(input())
+for i in range(N):
+    x, y=map(int, input().split())
+    a=vector(x, y)
+    l=a.length()
+    if l>lmax:
+        lmax=l
+        xmax=a.x
+        ymax=a.y
+print(xmax, ' ', ymax)
